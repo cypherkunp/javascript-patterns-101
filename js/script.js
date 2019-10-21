@@ -1,10 +1,10 @@
 var chatModule = (function() {
-    let fromSelf = 'Me:',
-        fromComputer = 'PC:',
-        aSaid = ['This is a Cyber Chat'],
-        msgYes = "Yes, that's a great idea.",
-        msgNo = 'No, that must be a mistake.',
-        aSassyStuff = [
+    let _fromSelf = 'Me:',
+        _fromComputer = 'PC:',
+        _aSaid = ['This is a Cyber Chat'],
+        _msgYes = "Yes, that's a great idea.",
+        _msgNo = 'No, that must be a mistake.',
+        _aSassyStuff = [
             'Like mold on books, grow myths on history.',
             'She moved like a poem and smiled like a sphinx.',
             'As long as we don’t die, this is gonna be one hell of a story.',
@@ -12,14 +12,14 @@ var chatModule = (function() {
             'You’ve got about as much charm as a dead slug.'
         ];
 
-    function echo(msg) {
-        aSaid.push(`<div>${msg}</div>`);
-        const aSaidLength = aSaid.length;
-        const start = Math.max(aSaidLength - 6, 0);
+    function _echo(msg) {
+        _aSaid.push(`<div>${msg}</div>`);
+        const _aSaidLength = _aSaid.length;
+        const start = Math.max(_aSaidLength - 6, 0);
         let out = '';
 
-        for (let index = start; index < aSaidLength; index++) {
-            out += aSaid[index];
+        for (let index = start; index < _aSaidLength; index++) {
+            out += _aSaid[index];
         }
 
         $('.advert').html(out);
@@ -27,20 +27,24 @@ var chatModule = (function() {
         $('#talk span').text(msg);
     }
 
+    function talk(msg) {
+        _echo(_fromSelf + ' ' + msg);
+    }
+
+    function replyYesOrNo() {
+        const msg = Math.random() > 0.5 ? _msgYes : _msgNo;
+        _echo(_fromComputer + ' ' + msg);
+    }
+
+    function saySassyStuff() {
+        const msg = _aSassyStuff[Math.floor(Math.random() * _aSassyStuff.length)];
+        _echo(_fromSelf + ' ' + msg);
+    }
+
     return {
-        talk(msg) {
-            echo(fromSelf + ' ' + msg);
-        },
-
-        replyYesOrNo() {
-            const msg = Math.random() > 0.5 ? msgYes : msgNo;
-            echo(fromComputer + ' ' + msg);
-        },
-
-        saySassyStuff() {
-            const msg = aSassyStuff[Math.floor(Math.random() * aSassyStuff.length)];
-            echo(fromSelf + ' ' + msg);
-        }
+        talk,
+        replyYesOrNo,
+        saySassyStuff
     };
 })();
 
@@ -57,12 +61,12 @@ io.github.devvratshukla.jsdp = io.github.devvratshukla.jsdp || {};
 
 // namespace
 io.github.devvratshukla.jsdp.chat = {
-    fromSelf: 'Me: ',
-    fromComputer: 'PC: ',
-    aSaid: ['This is a Cyber Chat'],
-    msgYes: "Yes, that's a great idea.",
-    msgNo: 'No, that must be a mistake.',
-    aSassyStuff: [
+    _fromSelf: 'Me: ',
+    _fromComputer: 'PC: ',
+    _aSaid: ['This is a Cyber Chat'],
+    _msgYes: "Yes, that's a great idea.",
+    _msgNo: 'No, that must be a mistake.',
+    _aSassyStuff: [
         'Like mold on books, grow myths on history.',
         'She moved like a poem and smiled like a sphinx.',
         'As long as we don’t die, this is gonna be one hell of a story.',
@@ -70,27 +74,27 @@ io.github.devvratshukla.jsdp.chat = {
         'You’ve got about as much charm as a dead slug.'
     ],
     talk(msg) {
-        this.echo(this.fromSelf + ' ' + msg);
+        this._echo(this._fromSelf + ' ' + msg);
     },
 
     replayYesNo() {
-        const msg = Math.random() > 0.5 ? this.msgYes : this.msgNo;
-        this.echo(this.fromComputer + ' ' + msg);
+        const msg = Math.random() > 0.5 ? this._msgYes : this._msgNo;
+        this._echo(this._fromComputer + ' ' + msg);
     },
 
     saySassyStuff() {
-        const msg = this.aSassyStuff[Math.floor(Math.random() * this.aSassyStuff.length)];
-        this.echo(this.fromSelf + ' ' + msg);
+        const msg = this._aSassyStuff[Math.floor(Math.random() * this._aSassyStuff.length)];
+        this._echo(this._fromSelf + ' ' + msg);
     },
 
-    echo(msg) {
-        this.aSaid.push(`<div>${this.fromSelf} ${msg}</div>`);
-        const aSaidLength = this.aSaid.length;
-        const start = Math.max(aSaidLength - 6, 0);
+    _echo(msg) {
+        this._aSaid.push(`<div>${this._fromSelf} ${msg}</div>`);
+        const _aSaidLength = this._aSaid.length;
+        const start = Math.max(_aSaidLength - 6, 0);
         let out = '';
 
-        for (let index = start; index < aSaidLength; index++) {
-            out += this.aSaid[index];
+        for (let index = start; index < _aSaidLength; index++) {
+            out += this._aSaid[index];
         }
 
         $('.advert').html(out);
